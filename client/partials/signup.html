@@ -1,0 +1,16 @@
+<style type="text/css">
+	#signInContainer{
+		margin-top: 20%;
+	}
+</style>
+
+
+<div ng-controller='SignInController' align='center'>
+	<div id="signInContainer">
+		<!-- User Signs In -->
+		<h1>Bucket Lists</h1>
+		<h4>Name</h4>
+		<input type='text' ng-model='new_User'>
+		<a href="#/dashboard"><input type='submit' value='Enter' ng-click='newUser()'></a>
+	</div>
+</div>

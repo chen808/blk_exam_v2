@@ -1,0 +1,193 @@
+<html ng-app='myApp'>
+<head>
+	<title>Boilerplate_Mean Stack</title>
+
+	<!-- Angular CDN -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+
+    <!-- Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <!-- Jquery UI CDN -->
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <!-- Bootstrap CDN -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	<!-- Angular Code -->
+	<script type="text/javascript">
+		var myApp = angular.module('myApp',['ngRoute']);
+
+
+		// ROUTES ===========================================
+		myApp.config(function ($routeProvider){
+				$routeProvider
+			        .when('/',{
+			            templateUrl: 'partials/signup.html'
+			        })
+			        .when('/dashboard',{
+			            templateUrl: 'partials/dashboard.html'
+			        })
+			        .when('/user/:id',{
+			            templateUrl: 'partials/user.html'
+			        })
+			        .otherwise({
+			          redirectTo: '/'
+			        });
+			});
+
+
+
+
+
+		// FACTORY ==========================================
+		myApp.factory('UserFactory', function($http){
+			var factory = {};
+			var stashUser = [];
+
+			factory.get_current_user = function(callback){
+				callback(stashUser);
+			}
+
+			factory.stashUser = function(user, callback){
+				// store the current user into array temporary
+				stashUser.push(user);
+				// send the stashUser back down to controller
+				callback(stashUser);
+			}
+
+			factory.newBucket = function(data, callback){
+				$http.post('/new_bucket', data).success(function(output){
+
+				})
+			}
+
+			factory.get_all_bucket = function(callback){
+				$http.get('/get_buckets').success(function(output){
+					console.log(output);
+					callback(output);
+				})
+			}
+
+			factory.get_all_users = function(callback){
+				$http.get('/getAllUsers').success(function(output){
+					callback(output);
+				})
+			}
+
+			factory.get_user = function(id, callback){
+				$http.get('/getUser/' + id).success(function(output){
+					callback(output);
+				})
+			}
+
+
+
+
+
+
+
+			return factory;
+		});
+
+
+
+
+
+
+
+		// SIGN IN CONTROLLER ================================
+		myApp.controller('SignInController', function($scope, UserFactory, $location){
+
+			// get the current user name
+			UserFactory.get_current_user(function(data){
+				$scope.this_user = data;
+			})
+
+			// get all the bucket list
+			UserFactory.get_all_bucket(function(data){
+				$scope.allBuckets = data;
+			})
+
+			// get all the users
+			UserFactory.get_all_users(function(data){
+				console.log(data);
+				$scope.allUsers = data;
+			})
+
+
+			// New User
+			$scope.newUser = function(){
+				// store the newly signed user to variable
+				var new_User = $scope.new_User;
+				// call on factory to store the current user name temporary
+				UserFactory.stashUser(new_User, function(user){})
+			}
+
+			// New Bucket
+			$scope.addBucket = function(){
+				// send info up to factory
+				UserFactory.newBucket($scope.newbucket, function(something){
+
+				})
+				// clear form
+				$scope.getAllBucket = {};
+
+				// get all the bucket list
+				UserFactory.get_all_bucket(function(data){
+					$scope.allBuckets = data;
+				})
+			}
+
+			// Get a User
+			$scope.getAUser = function(id){
+				console.log(id);
+				var location = '/user/' + id
+
+				console.log(location);
+
+				$location.path(location);
+
+				//$location.path('/user/:id').search({_id: id});
+			}
+
+
+		}) // end SignInController
+
+
+
+
+		// USER CONTROLLER ====================================
+		myApp.controller('UserController', function($scope, UserFactory, $location, $routeParams){
+			userID = $routeParams.id
+
+			UserFactory.get_user(userID, function(data){
+				console.log(data);
+				$scope.userProfile = data;
+			})
+
+
+
+
+		})
+
+
+	</script>
+
+
+
+
+</head>
+<body>
+	<div ng-view=""></div>
+</body>
+</html>

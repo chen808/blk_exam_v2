@@ -1,0 +1,32 @@
+<div ng-controller="UserController" align='left'>
+
+
+	<div ng-repeat='x in userProfile'>
+	
+			<h1>{{ x.user_name }}'s Bucket List </h1>
+
+			<!-- Done -->
+			<h3>Done</h3>
+
+			<!-- Pending -->
+			<h3>Pending</h3>
+			<div ng-repeat='y in x'>
+
+				<div ng-repeat='z in y'>
+					<input type='checkbox'> {{ x.user_name }}{{ z.user_name }} | {{ z.title }} | {{ z.description }} | {{ z.time }} <br>
+					<input type='checkbox'> {{ z.tag_user }} | {{ z.title }} | {{ z.description }} | {{ z.time }} <br>
+					<div ng-repeat='i in z'>
+						
+					</div>
+
+				</div>
+
+
+			</div>
+
+
+		
+	</div>
+</div>
+
+
