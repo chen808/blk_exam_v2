@@ -67,7 +67,8 @@
 
 			factory.newBucket = function(data, callback){
 				$http.post('/new_bucket', data).success(function(output){
-
+					// .success always expect a callback
+					callback();
 				})
 			}
 
@@ -115,12 +116,12 @@
 
 			// get all the bucket list
 			UserFactory.get_all_bucket(function(data){
+				console.log(data);
 				$scope.allBuckets = data;
 			})
 
 			// get all the users
 			UserFactory.get_all_users(function(data){
-				console.log(data);
 				$scope.allUsers = data;
 			})
 
@@ -135,31 +136,35 @@
 
 			// New Bucket
 			$scope.addBucket = function(){
-				// send info up to factory
-				UserFactory.newBucket($scope.newbucket, function(something){
-
-				})
-				// clear form
-				$scope.getAllBucket = {};
-
+				// send info up to factory\
+				UserFactory.newBucket($scope.newbucket, function(){
+					console.log(8)
 				// get all the bucket list
 				UserFactory.get_all_bucket(function(data){
+					console.log(data);
 					$scope.allBuckets = data;
 				})
+
+				UserFactory.get_all_users(function(data){
+					$scope.allUsers = data;
+				})	
+
+				// clear form
+				$scope.getAllBucket = {};
+				})
+
+
+
+			
 			}
 
 			// Get a User
 			$scope.getAUser = function(id){
-				console.log(id);
 				var location = '/user/' + id
-
-				console.log(location);
-
 				$location.path(location);
 
 				//$location.path('/user/:id').search({_id: id});
 			}
-
 
 		}) // end SignInController
 
@@ -168,6 +173,7 @@
 
 		// USER CONTROLLER ====================================
 		myApp.controller('UserController', function($scope, UserFactory, $location, $routeParams){
+
 			userID = $routeParams.id
 
 			UserFactory.get_user(userID, function(data){
@@ -175,9 +181,9 @@
 				$scope.userProfile = data;
 			})
 
-
-
-
+			UserFactory.get_current_user(function(data){
+				$scope.this_user = data;
+			})
 		})
 
 

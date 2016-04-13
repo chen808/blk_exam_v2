@@ -26,6 +26,8 @@ module.exports = function(app){
 	app.post('/new_bucket', function(req, res){
 		// send data to backend controller
 		user.newBucket(req, res);
+		console.log('PRINTING FROM THE ROUTE JS');
+		console.log(res.body);
 	})
 
 

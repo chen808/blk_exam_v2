@@ -1,8 +1,10 @@
 <div ng-controller="UserController" align='left'>
 
+	<a href="#/dashboard"><input type="submit" value="Back to Dashboard"></a> 
+
+	{{ this_user }}
 
 	<div ng-repeat='x in userProfile'>
-	
 			<h1>{{ x.user_name }}'s Bucket List </h1>
 
 			<!-- Done -->
@@ -20,12 +22,7 @@
 					</div>
 
 				</div>
-
-
 			</div>
-
-
-		
 	</div>
 </div>
 

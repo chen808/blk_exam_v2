@@ -13,35 +13,39 @@
 	<!-- Adding to bucketlist -->
 	<form name="myForm">
 
+		<!-- Enter Title and Description -->
 		<input type='text' name="title" ng-model='newbucket.title' placeholder='Title' ng-minlength="5">
 		<input type='text' name="description" ng-model='newbucket.description' placeholder='Description' ng-minlength="10">
 
+		<!-- Tag User Dropdown List -->
 		<select ng-model="newbucket.tag_user">
 			<option value="Clint">Clint</option>
 			<option value="Mui">Mui</option>
 			<option value="Alanna">Alanna</option>
 		</select>
 
+		<!-- Alert -->
 		<div role='alert'>
 			<span class='error' ng-show='myForm.title.$error.minlength'>Need more then 5 Characters!</span>
 			<span class='error' ng-show='myForm.description.$error.minlength'>Need more then 10 Characters!</span>
 		</div>
 
+		<!-- Submit -->
+		<input type="submit" value="Add to List" ng-click="addBucket()">
+
 
 	</form>
-
-
-	<!-- Submit -->
-	<a href="#/dashboard"><input type="submit" value="Add to List" ng-click="addBucket()"></a>
-
 
 
 	<!-- Display the bucket list -->
 	<h3>Before I die I want to:</h3>
 	<div ng-repeat='x in allBuckets'>
 		<div ng-repeat='y in x'>
-			<input type='checkbox'> {{ y.user_name }} | {{ y.buckets[0].title }} - {{ y.buckets[0].description }} | {{ y.buckets[0].time }}
-	
+			<div ng-repeat='i in y'>
+				<div ng-repeat='h in i'>
+					<input type='checkbox'> {{ y.user_name }} || {{ h.title }} || {{ h.description }} || {{ h.time }}
+				</div>	
+			</div>
 		</div>
 	</div>
 	
